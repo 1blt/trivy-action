@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          # Use a custom PAT for private repos or when default token lacks permissions
+          # Falls back to GITHUB_TOKEN if CUSTOM_GITHUB_TOKEN secret is not set
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Build an image from Dockerfile
         run: |
@@ -19,6 +23,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
           exit-code: '1'
           ignore-unfixed: true

@@ -3,6 +3,10 @@ description: 'Scans container images for vulnerabilities with Trivy'
 author: 'Aqua Security'
 
 inputs:
+  token:
+    description: 'GitHub token for authentication. Use this when the default GITHUB_TOKEN is unavailable or lacks permissions.'
+    required: false
+    default: ${{ github.token }}
   scan-type:
     description: 'Scan type to use for scanning vulnerability'
     required: false
